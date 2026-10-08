@@ -1,0 +1,379 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Rose Garden For You 🌹</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        overflow: hidden;
+        font-family: Georgia, serif;
+        background: linear-gradient(to bottom, #080b24, #17113b 55%, #261329);
+        color: white;
+        text-align: center;
+    }
+
+    /* Stars */
+    .stars {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+    }
+
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+        from { opacity: 0.2; }
+        to { opacity: 1; }
+    }
+
+    .content {
+        position: relative;
+        z-index: 10;
+        padding-top: 7vh;
+    }
+
+    h1 {
+        font-size: clamp(32px, 7vw, 60px);
+        margin: 0 20px 10px;
+        font-weight: normal;
+        text-shadow: 0 0 20px rgba(255, 120, 160, 0.7);
+    }
+
+    .subtitle {
+        font-size: 18px;
+        opacity: 0.85;
+        margin: 0 20px 25px;
+    }
+
+    button {
+        border: none;
+        padding: 14px 27px;
+        border-radius: 30px;
+        font-size: 17px;
+        font-family: inherit;
+        cursor: pointer;
+        color: white;
+        background: linear-gradient(135deg, #e8436b, #a91f4b);
+        box-shadow: 0 8px 25px rgba(232, 67, 107, 0.35);
+        transition: 0.25s;
+    }
+
+    button:hover {
+        transform: scale(1.07);
+        box-shadow: 0 10px 35px rgba(255, 80, 130, 0.55);
+    }
+
+    .garden {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 48vh;
+        pointer-events: none;
+    }
+
+    .ground {
+        position: absolute;
+        bottom: -80px;
+        left: -10%;
+        width: 120%;
+        height: 180px;
+        background: #11151a;
+        border-radius: 50% 50% 0 0;
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.4);
+    }
+
+    /* Rose */
+    .rose {
+        position: absolute;
+        bottom: 50px;
+        width: 60px;
+        height: 170px;
+        transform-origin: bottom;
+        animation: grow 1.3s ease-out forwards;
+    }
+
+    @keyframes grow {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .stem {
+        position: absolute;
+        width: 5px;
+        height: 125px;
+        background: linear-gradient(to right, #245c38, #438b51);
+        left: 28px;
+        bottom: 0;
+        border-radius: 10px;
+    }
+
+    .leaf {
+        position: absolute;
+        width: 30px;
+        height: 15px;
+        background: #39764a;
+        border-radius: 100% 0 100% 0;
+    }
+
+    .leaf.left {
+        left: 2px;
+        bottom: 55px;
+        transform: rotate(-25deg);
+    }
+
+    .leaf.right {
+        left: 28px;
+        bottom: 85px;
+        transform: rotate(150deg);
+    }
+
+    .flower {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        width: 40px;
+        height: 40px;
+        animation: bloom 0.8s ease-out 0.8s forwards;
+        transform: scale(0);
+    }
+
+    @keyframes bloom {
+        to { transform: scale(1); }
+    }
+
+    .petal {
+        position: absolute;
+        width: 23px;
+        height: 30px;
+        background: #e83261;
+        border-radius: 50% 50% 45% 45%;
+        box-shadow: 0 0 12px rgba(255, 40, 90, 0.45);
+    }
+
+    .p1 { left: 8px; top: 0; transform: rotate(0deg); }
+    .p2 { left: 18px; top: 8px; transform: rotate(72deg); }
+    .p3 { left: 13px; top: 18px; transform: rotate(144deg); }
+    .p4 { left: 0; top: 13px; transform: rotate(216deg); }
+    .p5 { left: 0; top: 3px; transform: rotate(288deg); }
+
+    .center {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #ffb21c;
+        border-radius: 50%;
+        left: 14px;
+        top: 14px;
+        z-index: 3;
+    }
+
+    /* Hearts */
+    .heart {
+        position: fixed;
+        bottom: -30px;
+        font-size: 20px;
+        animation: floatUp 5s linear forwards;
+        pointer-events: none;
+        z-index: 20;
+    }
+
+    @keyframes floatUp {
+        from {
+            transform: translateY(0) scale(0.8);
+            opacity: 0;
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        to {
+            transform: translateY(-100vh) translateX(var(--drift)) scale(1.4);
+            opacity: 0;
+        }
+    }
+
+    .message {
+        position: fixed;
+        left: 50%;
+        bottom: 20px;
+        transform: translateX(-50%);
+        width: min(90%, 600px);
+        font-size: 17px;
+        line-height: 1.6;
+        opacity: 0;
+        transition: opacity 1s;
+        z-index: 30;
+    }
+
+    .message.show {
+        opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+        .content {
+            padding-top: 5vh;
+        }
+
+        .subtitle {
+            font-size: 16px;
+        }
+
+        .garden {
+            height: 42vh;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="content">
+    <h1>A Little Garden For You 🌹</h1>
+
+    <p class="subtitle">
+        Every rose here is something I wish I could give you in person.
+    </p>
+
+    <button onclick="plantRose()">
+        🌱 Plant a Rose
+    </button>
+</div>
+
+<div class="garden" id="garden">
+    <div class="ground"></div>
+</div>
+
+<div class="message" id="message">
+    Some flowers take time to bloom... 🌹<br>
+    And some feelings are worth waiting for. ❤️
+</div>
+
+<script>
+
+    /* Create stars */
+    const stars = document.getElementById("stars");
+
+    for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 70 + "%";
+        star.style.animationDelay = Math.random() * 2 + "s";
+
+        stars.appendChild(star);
+    }
+
+
+    let roses = 0;
+
+    function plantRose() {
+
+        roses++;
+
+        const rose = document.createElement("div");
+        rose.className = "rose";
+
+        /*
+        Keeps roses spread across the garden.
+        */
+        const position = 5 + Math.random() * 90;
+
+        rose.style.left = position + "%";
+
+        /*
+        Slight random size.
+        */
+        const size = 0.7 + Math.random() * 0.7;
+        rose.style.transform = `scale(${size})`;
+
+        rose.innerHTML = `
+            <div class="stem"></div>
+
+            <div class="leaf left"></div>
+            <div class="leaf right"></div>
+
+            <div class="flower">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="petal p5"></div>
+                <div class="center"></div>
+            </div>
+        `;
+
+        document.getElementById("garden").appendChild(rose);
+
+        createHeart();
+
+        if (roses >= 5) {
+            document.getElementById("message").classList.add("show");
+        }
+
+        /*
+        Change button after several roses.
+        */
+        if (roses >= 10) {
+            document.querySelector("button").innerHTML =
+                "❤️ Our garden is growing...";
+        }
+    }
+
+
+    function createHeart() {
+
+        const heart = document.createElement("div");
+
+        heart.className = "heart";
+        heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💗";
+
+        heart.style.left = Math.random() * 100 + "%";
+
+        heart.style.setProperty(
+            "--drift",
+            (Math.random() * 200 - 100) + "px"
+        );
+
+        heart.style.animationDuration =
+            (4 + Math.random() * 3) + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 7000);
+    }
+
+</script>
+
+</body>
+</html>
+```
